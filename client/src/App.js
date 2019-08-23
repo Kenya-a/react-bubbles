@@ -12,20 +12,20 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
     if (localStorage.getItem('token')) {
       return <Component {...props} />;
     } else {
-      return <Redirect to="/login"/>;
+      return <Redirect to="/api/colors"/>;
     }
   }}/>;
 };
 
-const protectRoute = Component => props => {
-  if (localStorage.getItem('token')) {
-    return <Component {...props} />;
-  } else {
-    return <Redirect to="/login"/>;
-  }
-};
+// const protectRoute = Component => props => {
+//   if (localStorage.getItem('token')) {
+//     return <Component {...props} />;
+//   } else {
+//     return <Redirect to="/api/colors"/>;
+//   }
+// };
 
-const ProtectedColors = protectRoute(BubblesPage);
+// const ProtectedColors = protectRoute(BubblesPage);
 
 
 function App() {
@@ -36,6 +36,7 @@ function App() {
         <Route exact path="/" component={Login} />
         <ProtectedRoute path = '/api/colors' component = {BubblesPage}/>
       </div>
+      <BubblesPage/>
     </Router>
   );
 }
