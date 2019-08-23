@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import axios from "axios";
+//import axios from "axios";
+import axiosWithAuth from "../utils/axiosWithAuth";
 
 const initialColor = {
   color: "",
   code: { hex: "" }
 };
 
-const ColorList = ({ colors, updateColors }) => {
+const ColorList = ({ colors, updateColors, id }) => {
   console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
@@ -20,11 +21,20 @@ const ColorList = ({ colors, updateColors }) => {
     e.preventDefault();
     // Make a put request to save your updated color
     // think about where will you get the id from...
-    // where is is saved right now?
+    // where is it saved right now?
+    axiosWithAuth().put(`http://localhost:5000/api/colors/${id}`, e)
+    .then(res => {
+      setEditing(res.data)
+      ///history.push("/api/colors")
+    })
+    .catch(err => console.log(err.response))
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    axiosWithAuth().delete(`http://localhost:5000/api/colors/${color.id}`, color)
+      .then(res => setColorToEdit(res.data))
+      .catch(err => console.log(err.response))
   };
 
   return (
@@ -63,11 +73,11 @@ const ColorList = ({ colors, updateColors }) => {
             <input
               onChange={e =>
                 setColorToEdit({
-                  ...colorToEdit,
-                  code: { hex: e.target.value }
+                  //...colorToEdit,
+                  ...colorToEdit, hex: e.target.value 
                 })
               }
-              value={colorToEdit.code.hex}
+              value={colorToEdit.hex}
             />
           </label>
           <div className="button-row">
