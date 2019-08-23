@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 import Login from "./components/Login";
+
 import BubblesPage from './components/BubblePage';
 
 import "./styles.scss";
@@ -12,31 +13,21 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
     if (localStorage.getItem('token')) {
       return <Component {...props} />;
     } else {
-      return <Redirect to="/api/colors"/>;
+      return <Redirect to="/login"/>;
     }
   }}/>;
 };
 
-// const protectRoute = Component => props => {
-//   if (localStorage.getItem('token')) {
-//     return <Component {...props} />;
-//   } else {
-//     return <Redirect to="/api/colors"/>;
-//   }
-// };
-
-// const ProtectedColors = protectRoute(BubblesPage);
-
-
 function App() {
-  const [colorList, setColorList] = useState([]);
   return (
     <Router>
       <div className="App">
         <Route exact path="/" component={Login} />
         <ProtectedRoute path = '/api/colors' component = {BubblesPage}/>
+        {/* <Route path="/api/colors" component={ProtectedColors}/> */}
+
       </div>
-      <BubblesPage/>
+      {/* <BubblesPage/> */}
     </Router>
   );
 }
